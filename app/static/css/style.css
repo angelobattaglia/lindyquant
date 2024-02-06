@@ -1,0 +1,128 @@
+/*
+    Using the Flexbox Layout Model
+*/
+
+/*
+    The following class affects the tag <body> in "index.html, 
+    and makes it a flexbox container
+*/
+.container{
+    /* This is a Flex Container */
+    display:flex;
+    flex-direction: column;
+    background-color: #a1a1a1;
+}
+
+/*
+    This affects the tag <header> in index.html
+*/
+.title {
+    /* This is a Flex Container */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 3px solid;
+    border-color:green;
+    margin: 10px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    color: navy;
+}
+
+/*
+    This affects the tag <div> in index.html
+*/
+.one-side-one{
+    display: flex;
+    gap: 1em;
+}
+
+.side{
+    flex: 0 1 auto;
+    height: 30%;
+    align-items: center;
+    justify-content: left;
+    border: 3px solid;
+    border-color:silver;
+    margin: 10px;
+    padding: 10px;
+    background-color: lightgray;
+}
+
+.corpo{
+    align-items: center;
+    justify-content: right;
+    flex: 75%;
+    border: 3px solid;
+    border-color:#3498db;
+    margin: 10px;
+    padding: 10px;
+    background-color: lightsalmon; 
+}
+
+.head-tweet{
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Style for the button (you can customize this as needed) */
+.fixed-button {
+    position: fixed;
+    width: 88px; /* Set the width and height as equals to make the button circular */
+    height: 88px;
+    border-radius: 50%; /* Makes the button circular */
+    background-color: #3498db; /* Background color */
+    color: #ffffff; /* Text color */
+    /*With the following two attributes we place it in the corner right of the page*/
+    right: 10px; 
+    bottom: 10px;
+    /*With the following line: we're coloring the border of the button*/
+    border: 3px solid #c1c1c1;
+    cursor: pointer;
+    /*With the following line the "+" symbol inside the circle can be sized either bigger of smaller*/
+    font-size: 33px;
+    text-decoration: none; /* Remove underline for links */
+}
+
+
+/*
+    The following is the "media query", this CSS code overrides the already
+    existing CSS code when the browser that is viewing the document 
+*/
+@media (max-width: 1000px) {
+
+    .container{
+        /* This is a Flex Container */
+        display: flex;
+        /* flex-direction: ;*/
+        color: violet; /*The following is a debugging tool*/ 
+    }
+
+    .side{
+        flex: 0 1 auto;
+        height: 30%;
+        align-items: center;
+        justify-content: left;
+        margin: 10px;
+        padding: 10px;
+        background-color: lightgray;
+    }
+
+    .fixed-button {
+        position: fixed;
+        width: 60px; /* Set the width and height as equals to make the button circular */
+        height: 60px;
+        font-size: 15px;
+        border-radius: 50%; /* Makes the button circular */
+        background-color: #3498db; /* Background color */
+        color: #ffffff; /* Text color */
+        /*With the following two attributes we place it in the corner right of the page*/
+        right: 10px; 
+        bottom: 10px;
+        /*With the following line: we're coloring the border of the button*/
+        border: 3px solid #c1c1c1;
+        cursor: pointer;
+        /*With the following line the "+" symbol inside the circle can be sized either bigger of smaller*/
+        text-decoration: none; /* Remove underline for links */
+    }
+}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <main class="container ms-3 me-3">
+        <div class="row">
+            <div class="container">
+                <section class="row">
+                        <img src="{{ url_for('static', filename = post.immagine_post) }}" class="" style="width: 80px; height: 58px; border-radius:50%;" alt="image1">
+                        <h3 class="col-6">{{ post.username }}</h3>
+                        <time class="col-8">{{ post.date }}</time>
+                </section>
+            </div>
+        </div>
+
+        <div class="row">
+            <article class="col-6 mx-auto">
+                {{ post.text }}
+            </article>
+        </div>
+    </main>
+{% endblock %}

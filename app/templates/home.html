@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+<!--The placeholder {{ title }} then gets replaced by the title from render_template in the definition of the route-->
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <main class="col-md-10">
+
+        {% for post in posts %}
+        <div class="container">
+            <div class = row>
+
+                <div class="col-md-2" style="display: flex; justify-content: center; align-items: center; height: 200px; border: 2px solid black; padding: 20px; width: 150px; height: 170px;">
+                    <img src="static/img/pic1.png" alt="" class="col-7">
+                </div>
+                <div class="col-md-10" style="padding-left: 30px; padding-bottom: 20px;">
+                    <section class="row">
+                        <img src="{{ url_for('static', filename = post.immagine_post) }}" class="col-1" alt="image1">
+                        <!-- Now remind the usage of url_for('post', post_id = post.id)-->
+                        <h3 class="col-md-9"><a href="{{ url_for('post', post_id = post.id) }}"> {{ post.username | e }} </a></h3>
+                        <time class="col-md-2"> {{ post.date | e }} </time>
+                    </section>
+                    <article class="row">
+                        {{ post.text | e }}
+                    </article>
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+    </main>
+
+{% endblock %}
