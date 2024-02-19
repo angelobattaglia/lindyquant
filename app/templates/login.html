@@ -1,17 +1,28 @@
-{% extends "base1.html" %}
-
+{% extends 'base.html' %}
 {% block content %}
-  <h2>Login</h2>
-  <form method="POST">
-    {{ form.hidden_tag() }}
-    <p>
-      {{ form.username.label }}<br>
-      {{ form.username(size=32) }}
-    </p>
-    <p>
-      {{ form.password.label }}<br>
-      {{ form.password(size=32) }}
-    </p>
-    <p>{{ form.submit() }}</p>
-  </form>
+    {% if not current_user.is_authenticated %}
+        <a href="/">Torna indietro</a>
+        <div class="col-4 offset-md-4 bg-light p-4 border rounded">
+            <!-- The following is the action "/login" which in the app.py is @app.route('/login') -->
+
+            <form action="/login" method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <!-- The following is the label Nickname -->
+                    <label for="nicknameInput" class="form-label">Nickname</label>
+                    <!-- The following is the input that goes under the name "nickname" -->
+                    <input type="text" class="form-control" name="nickname" id="nicknameInput">
+                </div>
+
+                <div class="mb-3">
+                    <!-- The following is the label -->
+                    <label for="passwordInput" class="form-label">Password</label>
+                    <!-- The following is the input that goes under the name "password" -->
+                    <input type="password" class="form-control" name="password" id="passwordInput">
+                    <div id="passwordHelp" class="form-text">Non condivideremo mai la tua password con nessun altro.</div>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Accedi</button>
+                <small>Non hai ancora un account? <a href="/signup">Registrati</a></small>
+            </form>
+        </div>
+    {% endif %}
 {% endblock %}

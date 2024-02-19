@@ -16,16 +16,35 @@
 
 <body>
 
-    <header class="container text-center">
-            <div class="row">
-                <div class="col">
-                    <h1>LindyQuant</h1>
-                </div>
-                <div class="col">
-                    <p><a href = "{{ url_for('home')}}">Home</a> | <a href="{{ url_for('about')}}">About</a> | <a href = "{{ url_for('login')}}">Login</a></p>
-                </div>
+    <header class="container text-center mt-3 mb-3">
+        <div class="row mb-3">
+            <div class="col">
+                <h1>LindyQuant</h1>
             </div>
+        </div>
+    
+        <nav class="row">
+            <div class="col">
+                <p>
+                    {% if current_user.is_authenticated %}
+                        Logged in as {{ current_user.nickname }}
+                    {% else %}
+                        Not logged in
+                    {% endif %}
+                    |
+                    <a href="{{ url_for('home') }}">Home</a> |
+                    <a href="{{ url_for('about') }}">About</a>
+                    {% if current_user.is_authenticated %}
+                        | <a href="{{ url_for('logout') }}">Logout</a>
+                    {% else %}
+                        | <a href="{{ url_for('login') }}">Login</a>
+                        | <a href="{{ url_for('signup') }}">Sign Up</a>
+                    {% endif %}
+                </p>
+            </div>
+        </nav>
     </header>
+    
 
     <div class="container">
         <div class="row">
@@ -47,12 +66,13 @@
     <!-- Posting using the Bootstrap form: https://getbootstrap.com/docs/5.3/components/modal/ -->
 
     <!-- IF CURRENT USER IS AUTHENTICATED  -->
+    {% if current_user.is_authenticated %}
     <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#button-trigger" style="position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; border-radius: 50%; background-color: #007AFF; border: 2px solid #C0C0C0; color: #FFFFFF; font-size: 18px; display: flex; align-items: center; justify-content: center; padding-top: 2px">+</button>
 
     <div class="modal" tabindex="-1" id="button-trigger">
         <div class="modal-dialog">
             <div class="modal-content">
-                
+
                 <form action="/new_post" method="POST" enctype="multipart/form-data">
 
                     <!-- The header of the form  -->
@@ -64,38 +84,31 @@
                     <!-- The body of the form  -->
                     <div class="modal-body">
                         <div class="mb-3">
-
-                            <label for="usernameSelect" class="form-label">Select Username</label>
-                            <select class="form-select" id="usernameSelect" name="username">
-                                <option value="user1">@luigi</option>
-                                <option value="user2">@alberto</option>
-                                <option value="user3">@juan</option>
-                            </select>
-
                             <div class="mb-3">
                                 <label for="postContent" class="form-label">Post Content</label>
-                                <textarea class="form-control" id="postContent" name="postContent" required minlength="30" maxlength="200" placeholder="Insert a text for your post"></textarea>
+                                <!-- the name="text" is the one that bonds it --> 
+                                <textarea class="form-control" id="postContent" name="text" required minlength="30" maxlength="200" placeholder="Insert a text for your post"></textarea>
                             </div>
 
                             <div class="mb-3">
                                 <label for="postImage" class="form-label">Add an image (optional)</label>
                                 <div class="input-group">
-                                <input type="file" class="form-control" id="postImage" name="postImage" aria-label="Upload">
+                                <input type="file" class="form-control" id="postImage" name="immagine_post" aria-label="Upload">
                                 </div>
                             </div>
 
                             <div class="mb-3">
                                 <label for="postDate" class="form-label">Post Date</label>
-                                <input type="date" class="form-control" id="postDate" name="postDate" required min="">
+                                <input type="date" class="form-control" id="postDate" name="date" required min="">
                             </div>
-
                         </div>
                     </div>
 
                     <!-- The footer of the form  -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Post</button>
+                        <!-- It's important to note how the type="button" has been changed to type="submit"-->
+                        <button type="submit" class="btn btn-primary">Post</button>
                     </div>
 
                 </form>
@@ -103,6 +116,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
     <!-- END OF THE IF STATEMENT  -->
 
     <!-- Adding javascript for animations and components that are not made with CSS  -->

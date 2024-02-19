@@ -15,9 +15,10 @@
                 </div>
                 <div class="col-md-10" style="padding-left: 30px; padding-bottom: 20px;">
                     <section class="row">
+                        <!--I have to replace the 'img/pic1.png' with a default image-->
                         <img src="{{ url_for('static', filename = post.immagine_post) }}" class="col-1" alt="image1">
                         <!-- Now remind the usage of url_for('post', post_id = post.id)-->
-                        <h3 class="col-md-9"><a href="{{ url_for('post', post_id = post.id) }}"> {{ post.username | e }} </a></h3>
+                        <h3 class="col-md-9"><a href="{{ url_for('post', post_id = post.id) }}"> {{ post.nickname | e }} </a></h3>
                         <time class="col-md-2"> {{ post.date | e }} </time>
                     </section>
                     <article class="row">

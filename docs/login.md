@@ -73,3 +73,5 @@ It extends a base template (base.html) to inherit common structures or elements.
 Now, when you navigate to `/login` in your web browser, you should see a login form. When you submit the form, it will validate the input and if it's valid, it will execute the code in the `if form.validate_on_submit():` block. You can add your login logic there.
 
 
+# Decorators in Python
+Basics: A decorator in Python is essentially a function that takes another function as an argument, adds some kind of functionality, and returns another function without altering the source function's code. Decorators are denoted by the @ symbol and are placed above a function definition.
