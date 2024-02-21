@@ -6,17 +6,18 @@
 {% block content %}
     <main class="col-md-10">
 
-        {% for post in posts %}
+        {% for post in posts_new %}
         <div class="container">
             <div class = row>
 
                 <div class="col-md-2" style="display: flex; justify-content: center; align-items: center; height: 200px; border: 2px solid black; padding: 20px; width: 150px; height: 170px;">
-                    <img src="static/img/pic1.png" alt="" class="col-7">
+                    <img src="{{ url_for('static', filename = post.immagine_post)}}" alt="" class="col-7">
                 </div>
+
                 <div class="col-md-10" style="padding-left: 30px; padding-bottom: 20px;">
                     <section class="row">
-                        <!--I have to replace the 'img/pic1.png' with a default image-->
-                        <img src="{{ url_for('static', filename = post.immagine_post) }}" class="col-1" alt="image1">
+                        <!--I have to replace the 'img/pic1.png' (remember the quotes) with a default image-->
+                        <img src="{{ url_for('static', filename = post.immagine_profilo) }}" class="col-1" alt="image1">
                         <!-- Now remind the usage of url_for('post', post_id = post.id)-->
                         <h3 class="col-md-9"><a href="{{ url_for('post', post_id = post.id) }}"> {{ post.nickname | e }} </a></h3>
                         <time class="col-md-2"> {{ post.date | e }} </time>
@@ -24,6 +25,8 @@
                     <article class="row">
                         {{ post.text | e }}
                     </article>
+                    {{ post.immagine_post }} <!-- Show the value of post.immagine_post -->
+                    {{ post.immagine_profilo }} <!-- Show the value of post.immagine_profilo -->
                 </div>
 
             </div>

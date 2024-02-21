@@ -7,20 +7,163 @@
         <div class="row">
             <div class="container">
                 <section class="row">
-                        <img src="{{ url_for('static', filename = 'img/pic1.png') }}" class="" style="width: 80px; height: 58px; border-radius:50%;" alt="image1">
+                        <img src="{{ url_for('static', filename = usr.immagine_profilo) }}" class="" style="width: 80px; height: 58px; border-radius:50%;" alt="image1">
                         <h3 class="col-6">{{ post.nickname }}</h3>
                         <time class="col-8">{{ post.date }}</time>
                 </section>
             </div>
         </div>
 
-        <div class="row">
-            <!--I have to replace the '' with the image inserted by the user-->
-            <img src="{{ url_for('static', filename = post.immagine_post) }}">
-            <article class="col-6 mx-auto">
-                {{ post.text }}
-            </article>
+        <div class="container mt-4">
+        <div class="row justify-content-center align-items-center g-3"> <!-- g-3 adds a gap between columns -->
+
+                <div class="col-lg-6 col-md-6 order-lg-2">
+                    <!-- Added a border-start class for the image container -->
+                    <div class="border-start ps-3"> <!-- ps-3 adds padding to the left (start) of the container -->
+                        <img src="{{ url_for('static', filename = post.immagine_post) }}" class="img-fluid rounded" alt="Post Image">
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 order-lg-1">
+                    <article class="card">
+                        <div class="card-body">
+                            {{ post.text }}
+                        </div>
+                    </article>
+                </div>
+
+            </div>
         </div>
+
+        Lo user è il n°: {{ usr.id }} --- 
+        L'id del post è il numero: {{ post.id }}
+        {% for comment in comments %}
+            ecco l'id del commento i-esimo: {{comment.id}}
+        {% endfor %}
+
+        <form action="/comments/new" method="POST" enctype="multipart/form-data">
+
+            <div class="my-2 text-center">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="radioOptions" id="radioNA" value="0" checked>
+                    <label class="form-check-label" for="radioNA">N.A.</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="radioOptions" id="radio1" value="1">
+                    <label class="form-check-label" for="radio1"><i class="bi bi-star-fill"></i><i class="bi bi-star"></i><i
+                        class="bi bi-star"></i><i class="bi bi-star"></i><i class="bi bi-star"></i></label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="radioOptions" id="radio2" value="2">
+                    <label class="form-check-label" for="radio2"><i class="bi bi-star-fill"></i><i
+                        class="bi bi-star-fill"></i><i class="bi bi-star"></i><i class="bi bi-star"></i><i
+                        class="bi bi-star"></i></label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="radioOptions" id="radio3" value="3">
+                    <label class="form-check-label" for="radio3"><i class="bi bi-star-fill"></i><i
+                        class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i><i
+                        class="bi bi-star"></i></label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="radioOptions" id="radio4" value="4">
+                    <label class="form-check-label" for="radio4"><i class="bi bi-star-fill"></i><i
+                        class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                        class="bi bi-star"></i></label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="radioOptions" id="radio5" value="5">
+                    <label class="form-check-label" for="radio5"><i class="bi bi-star-fill"></i><i
+                        class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                        class="bi bi-star-fill"></i></label>
+                </div>
+            </div>
+
+
+        <!-- This following code, being pourposfully at the half of the page, is the
+            form where I can submit a comment to the route "/comments/new" -->
+            <!-- The following is the text area -->
+            <div class="mb-3">
+              <label for="txtComment" class="form-label">Cosa ne pensi del post</label>
+              <textarea class="form-control" id="txtComment" name="testo" rows="3" required></textarea>
+            </div>
+
+            <!-- The following is where I can input images -->
+            <div class="mb-3">
+              <label for="commentImage" class="form-label">Aggiungi un'immagine al tuo commento</label>
+              <input class="form-control" type="file" id="commentImage" name="immagine_commento">
+            </div>
+
+            <!-- The following is where I can state if I want to be Anon -->
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="checkAnonymous" name="isAnonymous">
+              <label class="form-check-label" for="checkAnonymous">Pubblicare in anonimo</label>
+            </div>
+
+            <input type="number" name="id_post" value="{{ post.id }}" hidden>
+            <button type="submit" class="btn btn-primary">Pubblica</button>
+
+        </form>
+
+        <!-- This following code, being pourposfully at the bottom of the page, is the
+            visualization of the comments to the post -->
+        {% if comments | length > 0 %}
+            <section class="py-3">
+            <div class="h4 pb-2 mb-4 border-bottom">
+                Comments
+            </div>
+
+            {% for comment in comments %}
+                <article class="row pb-2">
+                    <!-- The following is the user image if the user is Anonymous it will be displayed another name and another image instead of comment.nickname and comment.immagine_profilo -->
+                    {% if comment.id_utente != None %}
+                        <div class="col-2 text-center"><img class="usrimg rounded-circle"
+                            src="{{ url_for('static', filename=comment.immagine_profilo) }}"
+                            alt="Questa è l'immagine dell'utente {{ comment.nickname |e }}">
+                        <br>{{ comment.nickname |e }}
+                        </div>
+
+                    {% else %}
+                        <div class="col-2 text-center"><img class="usrimg rounded-circle"
+                            src="{{ url_for('static', filename='anonymous.png') }}">
+                        <br>Utente anonimo
+                        </div>
+
+                    {% endif %}
+
+                    <div class="col-10">
+
+                        <!-- To fix up later -->
+                        <div class="row">
+                            <div class="d-inline-flex">
+                                {% if comment.Valutazione is none %}
+                                Il commento è privo di valutazione
+                                {% else %}
+                                Ecco la valutazione dell'utente: {{comment.Valutazione}}
+                                {% endif %}
+                                <!--<i class="bi bi-star-fill"></i>-->
+                            </div>
+                        </div>
+
+                        <div class="row fw-light">
+                            <p>{{ comment.testo | e }}</p>
+                        </div>
+
+                        <div class="col-3">
+                            {% if comment.immagine_commento != None %}
+                            <img src="{{ url_for('static', filename=comment.immagine_commento) }}" class="img-thumbnail"
+                            alt="Questa è l'immagine associata al commento">
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+                </article>
+            {% endfor %}
+
+            </section>
+        {% endif %}
 
     </main>
 {% endblock %}

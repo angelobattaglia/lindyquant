@@ -1,7 +1,7 @@
 # Note: it is important to add "render_template" to the imports
 from flask import Flask, render_template
 from flask import Flask, render_template, request
-from flask import redirect, url_for, flash
+from flask import redirect, url_for, flash, abort
 
 # Flask-Login is a Flask extension that provides a framework for handling user authentication
 import flask_login
@@ -33,6 +33,8 @@ from post_dao import add_post
 import models
 import utenti_dao
 import commenti_dao
+from commenti_dao import add_comment
+from commenti_dao import get_comments
 
 PROFILE_IMG_HEIGHT = 130
 POST_IMG_WIDTH = 300
@@ -51,8 +53,40 @@ login_manager.init_app(app)
 @app.route('/')
 def home():
     posts = []
-    posts = get_all_posts()
-    return render_template('home.html', posts = posts, title='Home')
+    users = []
+    posts = post_dao.get_all_posts()
+    users = utenti_dao.get_users()
+
+    # I'll create a new dictionary to pass into the home.html to jinja templates
+    posts_new = []
+    for post in posts:
+        for user in users:
+            if post['id_utente'] == user['id']:
+                # In this revised code, user['immagine_profilo'] directly accesses the value
+                # of the immagine_profilo column in the user sqlite3.Row. If this value is
+                # None or an empty string (which you can check with if user['immagine_profilo']),
+                # the code falls back to a default image path. The same logic applies to post['immagine_post'].
+                #
+                # Directly access 'immagine_profilo' from user, set a default if it's None or empty
+                post['immagine_profilo'] = user['immagine_profilo'] if user['immagine_profilo'] else 'path/to/default/profile/image.jpg'
+                # Assume 'immagine_post' is always present in post; set a default if it's None or empty
+                post['immagine_post'] = post['immagine_post'] if post['immagine_post'] else 'path/to/default/post/image.jpg'
+                posts_new.append(post)
+                break
+                # # # The following two solutions are wrong
+                # # Set default image if 'immagine_profilo' is missing or empty
+                # post['immagine_profilo'] = user.get('immagine_profilo') or 'static/img/pic1.png'
+                # # Set default image if 'immagine_post' is missing or empty
+                # post['immagine_post'] = post.get('immagine_post') or 'static/img/pic1.png'
+                # posts_new.append(post)
+                # break
+                # The following alternative does not work if there's no profile image given or image post given
+                # post['immagine_profilo'] = user['immagine_profilo']
+                # posts_new.append(post)
+                # # if I find the user, I can break the loop
+                # break
+
+    return render_template('home.html', posts_new = posts_new, title='Home')
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -63,13 +97,28 @@ def page_not_found(e):
 def post(post_id):
     posts = []
     posts = get_all_posts()
+    
+    # Check if the provided post_id is within the valid range
+    if post_id < 1 or post_id > len(posts):
+        abort(404)  # Post not found, return a 404 error
+
     post = posts[post_id-1]
-    return render_template('post.html', post = post, title='Post')
+
+    # I also have to pass him the user to whom the post belongs, 
+    # each post has a user_id field, so I use post_dao's get_user_by_id method ..
+    usr = utenti_dao.get_user_by_id(post['id_utente'])
+
+    # Comments for the post with post_id equal to the one passed in the URL
+    comments = commenti_dao.get_comments(post_id)
+
+    return render_template('post.html', post = post, usr = usr, comments = comments, title='Post')
 
 @app.route('/new_post', methods=['GET', 'POST'])
 @login_required
 def new_post():
     post = request.form.to_dict()
+
+    # I make some checks and analysis on the post dictionary
 
     # If the post is either empty, with a wrong date or with a date
     # corresponding to a day that has already passed, you get redirected to
@@ -116,6 +165,8 @@ def new_post():
     # flask_login.current_user.id is the id of the current user
     post['id_utente'] = int(flask_login.current_user.id)  
     post['nickname'] = str(flask_login.current_user.nickname)
+
+    # After finishing making the checks, I put the "post" dictionary in the database
     success = post_dao.add_post(post)
 
     if success:
@@ -132,6 +183,7 @@ def new_comment():
 
     comment = request.form.to_dict()
 
+    # If the comment is empty, you get redirected to the home page and an error message is logged
     if comment['testo'] == '':
         app.logger.error('Il commento non può essere vuoto!')
         return redirect(url_for('single_post', id=comment['id_post']))
@@ -154,7 +206,7 @@ def new_comment():
         # Extracting file extension from the image filename
         ext = comment_image.filename.split('.')[-1]
         # Getting the current timestamp in seconds
-        secondi = int(datetime.now().timestamp())       
+        secondi = int(datetime.datetime.now().timestamp())       
 
         # Saving the image with a unique filename in the 'static' directory
         img.save('static/@comment-' + str(secondi) + '.' + ext)
@@ -166,13 +218,18 @@ def new_comment():
 
     comment['id_post'] = int(comment['id_post'])
     comment['id_utente'] = int(flask_login.current_user.id)
-    comment['valutazione'] = int(comment['radioOptions'])
+
+    # radioOptions is the name of the input field for the radio buttons in the comment form
+    if comment['radioOptions'] == '0':
+        comment['Valutazione'] = None
+    else:
+        comment['Valutazione'] = int(comment['radioOptions'])
 
     if 'isAnonymous' in comment and comment['isAnonymous'] == 'on':
         comment['id_utente'] = None
     else:
         comment['id_utente'] = int(comment['id_utente'])
-           
+
     success = commenti_dao.add_comment(comment)
 
     if success:
@@ -180,7 +237,8 @@ def new_comment():
     else:
         app.logger.error('Errore nella creazione del commento: riprova!')
             
-    return redirect(url_for('single_post', id=comment['id_post']))
+    # I pass the id of the post to which the comment belongs to the post page
+    return redirect(url_for('post', post_id=comment['id_post']))
 
 # Define the signup page
 @app.route('/signup')

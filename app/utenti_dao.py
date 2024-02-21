@@ -33,7 +33,7 @@ def get_users():
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
 
-    sql = 'SELECT id, nickname FROM utenti'
+    sql = 'SELECT id, nickname, immagine_profilo FROM utenti'
     cursor.execute(sql)
     users = cursor.fetchall()
 
@@ -64,6 +64,7 @@ def add_user(user):
     cursor.close()
     conn.close()
 
+# # It is possible to create a table and insert data in a single function
 # def create_table_and_insert_data():
     # with sqlite3.connect('datas.db') as con:
         # cur = con.cursor()

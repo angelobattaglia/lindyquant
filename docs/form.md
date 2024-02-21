@@ -26,3 +26,8 @@ However, there are a few issues in the current implementation that might prevent
 - Field Names Mismatch: The form fields and the keys expected in the route handler do not match. For example, the form has a textarea with name="postContent" and an input field with name="postDate", but in the route, you are trying to access these values with post['text'] and post['date'] respectively. You should change these to match the form's name attributes, like post['postContent'] and post['postDate'].
 
 - Image Field Name Mismatch: Similarly, the file input for the image has name="postImage", but in the route, you are trying to access it with request.files['immagine_post']. This should be changed to request.files['postImage'] to match the form
+
+
+
+## This is the logic behind it
+Check Flask Routing: Ensure that the Flask route (/comments/new) is correctly defined in app.py and that it matches the action attribute of your HTML form. Also, make sure that the route is using the POST method.

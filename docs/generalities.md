@@ -78,3 +78,27 @@ In the provided Flask application, routes and their corresponding views are defi
     - **Views**: These functions handle form submissions for creating a new user, logging in, and logging out. They include validation checks, password hashing, image processing for user profiles, session management using Flask-Login, and appropriate redirects and flash messages for feedback.
 
 In this application, routes and views are used to structure the application's web interface, allowing users to navigate through pages, submit forms, and interact with the content. The use of Flask's `render_template` function within view functions enables the dynamic generation of HTML content based on the application's data and logic, providing a seamless user experience.
+
+
+
+## Workflow
+
+If clicking "Pubblica" on your HTML form doesn't update the SQLite database as expected, there could be several potential issues. Here's a step-by-step approach to troubleshoot the problem:
+
+Check for JavaScript Errors: Ensure that there are no JavaScript errors preventing the form submission. Open your browser's developer tools (usually by pressing F12 or right-clicking and selecting "Inspect"), and go to the Console tab to see if any errors are logged when you click the "Pubblica" button.
+
+Verify Form Submission: Confirm that the form submission is triggered properly. You can do this by adding a print or logging statement at the beginning of your new_comment() function in app.py. If you see this statement logged in your console or server logs when you submit the form, it indicates that the form submission is reaching your Flask application.
+
+Check Flask Routing: Ensure that the Flask route (/comments/new) is correctly defined in app.py and that it matches the action attribute of your HTML form. Also, make sure that the route is using the POST method.
+
+Inspect Form Data: Inside your new_comment() function, print or log the comment dictionary that is created from the form data. Verify that it contains the expected values for testo, id_post, immagine_commento, etc. This will help you identify if there are any issues with how the form data is being processed.
+
+Check Database Interaction: Review the code in commenti_dao.py to ensure that the add_comment() function is correctly adding the comment to the SQLite database. You may also want to add print or log statements within this function to see if it's being called and if any exceptions are being raised.
+
+Verify Database Connection: Ensure that your SQLite database (datas.db) is accessible and that the database connection is established properly. You can add a test query to commenti_dao.py to check if you can read from the database successfully.
+
+Inspect Database Schema: Verify that the database schema matches the fields you're trying to insert into and that there are no constraints preventing the data from being inserted.
+
+Handle Exceptions: Make sure that your code properly handles any exceptions that may occur during form submission or database interaction. Add try-except blocks and logging to catch and log any errors that occur.
+
+By following these steps and systematically checking each component of your application, you should be able to identify and resolve the issue preventing the form submission from updating the SQLite database. If you encounter any specific errors or need further assistance with any of these steps, please let me know.

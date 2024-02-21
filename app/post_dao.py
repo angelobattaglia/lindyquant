@@ -1,48 +1,5 @@
 import sqlite3
 
-# ------------------------------------------------
-# ------------------------------------------------
-# ------------------------------------------------
-# The posts data structure
-# a = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
-# posts = [
-    # {'id': 1, 'nickname': 'Luigi', 'date': '1 Giorni fa', 'text': a, 'immagine_post': 'img/pic1.png', 'id_utente': 1},
-    # {'id': 2, 'nickname': 'Alberto', 'date': '2 Giorni fa', 'text': a, 'immagine_post': 'img/pic2.png', 'id_utente': 2},
-    # {'id': 3, 'nickname': 'Juan', 'date': '3 Giorni fa', 'text': a, 'immagine_post': 'img/pic3.png', 'id_utente': 3}
-# ]
-
-# def populate_posts_table(posts):
-    # # Connect to the SQLite database
-    # con = sqlite3.connect('datas.db')
-
-    # # Create a cursor object
-    # cur = con.cursor()
-
-    # # Clear the posts table
-    # # Clear Table Before Inserting: 
-    # # If it's acceptable for your use case (such as during initial setup or testing),
-    # # you could clear the posts table before inserting new posts. 
-    # # This ensures there are no duplicate id values but also removes all existing data from the table.
-    # cur.execute('DELETE FROM posts')
-
-    # # Iterate over the posts list
-    # for post in posts:
-        # # Insert each dictionary into the database
-        # cur.execute('''
-            # INSERT INTO posts (id, nickname, date, text, immagine_post, id_utente)
-            # VALUES (?, ?, ?, ?, ?, ?)
-        # ''', (post['id'],  post['nickname'], post['date'], post['text'], post['immagine_post'], post['id_utente'] ))
-
-    # # Commit the transaction
-    # con.commit()
-
-    # # Close the cursor and the connection
-    # cur.close()
-    # con.close()
-
-# # Call the function
-# populate_posts_table(posts)
-
 def get_posts():
     conn = sqlite3.connect('datas.db')
     conn.row_factory = sqlite3.Row
@@ -70,6 +27,7 @@ def get_post(id):
     conn.close()
 
     return post
+
 # ------------------------------------------------
 # ------------------------------------------------
 # ------------------------------------------------
@@ -97,11 +55,6 @@ def get_all_posts():
     con.close()
 
     return posts
-
-    # This method fetches all rows of the query result set and returns
-    # a list of rows as dictionary-like objects (due to the earlier row_factory setting).
-    # Each row in the list represents a post, along with the associated user information.
-    # posts = cur.fetchall()
 
 # ------------------------------------------------
 # ------------------------------------------------
@@ -144,3 +97,46 @@ def add_post(post):
     con.close()
 
     return success
+
+# ------------------------------------------------
+# ------------------------------------------------
+# ------------------------------------------------
+# The posts data structure
+# a = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
+# posts = [
+    # {'id': 1, 'nickname': 'Luigi', 'date': '1 Giorni fa', 'text': a, 'immagine_post': 'img/pic1.png', 'id_utente': 1},
+    # {'id': 2, 'nickname': 'Alberto', 'date': '2 Giorni fa', 'text': a, 'immagine_post': 'img/pic2.png', 'id_utente': 2},
+    # {'id': 3, 'nickname': 'Juan', 'date': '3 Giorni fa', 'text': a, 'immagine_post': 'img/pic3.png', 'id_utente': 3}
+# ]
+
+# def populate_posts_table(posts):
+    # # Connect to the SQLite database
+    # con = sqlite3.connect('datas.db')
+
+    # # Create a cursor object
+    # cur = con.cursor()
+
+    # # Clear the posts table
+    # # Clear Table Before Inserting: 
+    # # If it's acceptable for your use case (such as during initial setup or testing),
+    # # you could clear the posts table before inserting new posts. 
+    # # This ensures there are no duplicate id values but also removes all existing data from the table.
+    # cur.execute('DELETE FROM posts')
+
+    # # Iterate over the posts list
+    # for post in posts:
+        # # Insert each dictionary into the database
+        # cur.execute('''
+            # INSERT INTO posts (id, nickname, date, text, immagine_post, id_utente)
+            # VALUES (?, ?, ?, ?, ?, ?)
+        # ''', (post['id'],  post['nickname'], post['date'], post['text'], post['immagine_post'], post['id_utente'] ))
+
+    # # Commit the transaction
+    # con.commit()
+
+    # # Close the cursor and the connection
+    # cur.close()
+    # con.close()
+
+# # Call the function
+# populate_posts_table(posts)
