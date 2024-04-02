@@ -61,8 +61,8 @@ In this modified schema, whenever a new row is inserted into the posts table wit
 ```sql
 CREATE TABLE "utenti" (
 	"id"	INTEGER NOT NULL,
-	"nickname"	INTEGER NOT NULL,
-	"password"	INTEGER NOT NULL,
+	"nickname"	TEXT NOT NULL,
+	"password"	TEXT NOT NULL,
 	"immagine_profilo"	INTEGER NOT NULL,
 	PRIMARY KEY("id")
 )

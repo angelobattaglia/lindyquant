@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
     {% if not current_user.is_authenticated %}
-        <a href="/">Torna indietro</a>
+<div class="container mt-5"> <!-- Adds a top margin and centers content -->
+        <div class="d-flex justify-content-start mb-4"> <!-- Ensures button is aligned to the start and adds bottom margin -->
+            <a href="/" class="btn btn-primary">Torna indietro</a>
+        </div>
         <div class="col-4 offset-md-4 bg-light p-4 border rounded">
             <!-- The following is the action "/login" which in the app.py is @app.route('/login') -->
 
@@ -24,5 +27,6 @@
                 <small>Non hai ancora un account? <a href="/signup">Registrati</a></small>
             </form>
         </div>
+</div>
     {% endif %}
 {% endblock %}

@@ -4,34 +4,30 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-    <main class="col-md-10">
+<main class="col-md-10">
+    {% for post in posts_new %}
+    <div class="container my-3">
+        <div class="row border rounded shadow-sm p-3">
+            <div class="col-md-2 d-flex justify-content-center align-items-center">
+                <img src="{{ url_for('static', filename=post.immagine_post) }}" alt="" class="img-fluid rounded" style="max-width: 150px; max-height: 170px;">
+            </div>
 
-        {% for post in posts_new %}
-        <div class="container">
-            <div class = row>
-
-                <div class="col-md-2" style="display: flex; justify-content: center; align-items: center; height: 200px; border: 2px solid black; padding: 20px; width: 150px; height: 170px;">
-                    <img src="{{ url_for('static', filename = post.immagine_post)}}" alt="" class="col-7">
+            <div class="col-md-10">
+                <div class="row align-items-center mb-2">
+                    <div class="col-auto pe-0"> <!-- Adjusted for closer positioning and removed padding-end -->
+                        <!-- Made image slightly smaller and square -->
+                        <img src="{{ url_for('static', filename=post.immagine_profilo) }}" alt="" class="img-fluid rounded" style="width: 40px; height: 40px; object-fit: cover;">
+                    </div>
+                    <h3 class="col mb-0">
+                        <a href="{{ url_for('post', post_id=post.id) }}" class="text-decoration-none">{{ post.nickname | e }}</a>
+                    </h3>
+                    <time class="col-auto text-muted">{{ post.date | e }}</time> <!-- Changed to col-auto for dynamic sizing -->
                 </div>
-
-                <div class="col-md-10" style="padding-left: 30px; padding-bottom: 20px;">
-                    <section class="row">
-                        <!--I have to replace the 'img/pic1.png' (remember the quotes) with a default image-->
-                        <img src="{{ url_for('static', filename = post.immagine_profilo) }}" class="col-1" alt="image1">
-                        <!-- Now remind the usage of url_for('post', post_id = post.id)-->
-                        <h3 class="col-md-9"><a href="{{ url_for('post', post_id = post.id) }}"> {{ post.nickname | e }} </a></h3>
-                        <time class="col-md-2"> {{ post.date | e }} </time>
-                    </section>
-                    <article class="row">
-                        {{ post.text | e }}
-                    </article>
-                    {{ post.immagine_post }} <!-- Show the value of post.immagine_post -->
-                    {{ post.immagine_profilo }} <!-- Show the value of post.immagine_profilo -->
-                </div>
-
+                <article>
+                    {{ post.text | e }}
+                </article>
             </div>
         </div>
-        {% endfor %}
-    </main>
-
+    {% endfor %}
+</main>
 {% endblock %}

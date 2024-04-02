@@ -14,49 +14,67 @@
 
 </head>
 
-<body>
+<body class="bg-light">
 
-    <header class="container text-center mt-3 mb-3">
-        <div class="row mb-3">
+    <header class="container text-center my-4">
+        <div class="row mb-4">
             <div class="col">
-                <h1>LindyQuant</h1>
+                <h1 class="display-4">LindyQuant</h1>
             </div>
         </div>
-    
+
         <nav class="row">
             <div class="col">
-                <p>
+                <ul class="nav justify-content-center">
                     {% if current_user.is_authenticated %}
-                        Logged in as {{ current_user.nickname }}
+                        <li class="nav-item">
+                            <span class="nav-link disabled">Logged in as {{ current_user.nickname }}</span>
+                        </li>
                     {% else %}
-                        Not logged in
+                        <li class="nav-item">
+                            <span class="nav-link disabled">Not logged in</span>
+                        </li>
                     {% endif %}
-                    |
-                    <a href="{{ url_for('home') }}">Home</a> |
-                    <a href="{{ url_for('about') }}">About</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('about') }}">About</a>
+                    </li>
                     {% if current_user.is_authenticated %}
-                        | <a href="{{ url_for('logout') }}">Logout</a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                        </li>
                     {% else %}
-                        | <a href="{{ url_for('login') }}">Login</a>
-                        | <a href="{{ url_for('signup') }}">Sign Up</a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('signup') }}">Sign Up</a>
+                        </li>
                     {% endif %}
-                </p>
+                </ul>
             </div>
         </nav>
     </header>
-    
 
     <div class="container">
         <div class="row">
 
-            <aside class="col-md-2">
-                <h3>Trending</h3>
-                <ul>
-                    <li><a href="">Today</a></li>
-                    <li><a href="">This Week</a></li>
-                    <li><a href="">This Month</a></li>
-                </ul>
-            </aside>
+    <aside class="col-md-2">
+        <h3 class="h6 text-uppercase text-secondary mb-3">Trending</h3>
+        <ul class="list-group">
+            <li class="list-group-item border-0 p-0 mb-2">
+                <a href="" class="text-decoration-none d-block p-2 bg-light rounded">Today</a>
+            </li>
+            <li class="list-group-item border-0 p-0 mb-2">
+                <a href="" class="text-decoration-none d-block p-2 bg-light rounded">This Week</a>
+            </li>
+            <li class="list-group-item border-0 p-0">
+                <a href="" class="text-decoration-none d-block p-2 bg-light rounded">This Month</a>
+            </li>
+        </ul>
+    </aside>
 
             {% block content %}{% endblock %}
 

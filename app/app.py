@@ -187,8 +187,10 @@ def new_comment():
     if comment['testo'] == '':
         app.logger.error('Il commento non può essere vuoto!')
         return redirect(url_for('single_post', id=comment['id_post']))
-
+    
     comment_image = request.files['immagine_commento']
+
+    # comment_image = request.files['immagine_commento']
     if comment_image:
         # Open the user-provided image using the Image module
         img = Image.open(comment_image)
