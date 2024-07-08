@@ -104,7 +104,7 @@ def post(post_id):
 
     post = posts[post_id-1]
 
-    # I also have to pass him the user to whom the post belongs, 
+    # I also have to pass it the user to whom the post belongs, 
     # each post has a user_id field, so I use post_dao's get_user_by_id method ..
     usr = utenti_dao.get_user_by_id(post['id_utente'])
 
